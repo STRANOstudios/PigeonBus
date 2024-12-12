@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
         _currentState.Enter();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         _currentState?.Update();
     }
