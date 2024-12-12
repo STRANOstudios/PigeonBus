@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField, ShowIf("_onDrawGizmos"), ColorPalette] Color _gizmosColor = Color.green;
     [SerializeField, MinValue(0f), ShowIf("_onDrawGizmos")] private float _targetSize = 1f;
 
+    // States
     private IFinalState _currentState;
     private IFinalState _movementState;
     private IFinalState _stopState;
@@ -31,6 +32,10 @@ public class PlayerController : MonoBehaviour
         _currentState?.Update();
     }
 
+    /// <summary>
+    /// Switches the player state to a new state.
+    /// </summary>
+    /// <param name="newState"></param>
     public void SwitchState(IFinalState newState)
     {
         if (_debug) Debug.Log($"Switching state to {newState.GetType().Name}");
@@ -65,6 +70,9 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.identity; 
     }
 
+    /// <summary>
+    /// Returns the speed of the player.
+    /// </summary>
     public float Speed => speed;
 
     private void OnDrawGizmos()

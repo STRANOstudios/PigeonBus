@@ -12,12 +12,12 @@ public class Timer : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnTimeUpdate += UpdateScore;
+        GameManager.OnTimeUpdate += UpdateTimer;
     }
 
     private void OnDisable()
     {
-        GameManager.OnTimeUpdate -= UpdateScore;
+        GameManager.OnTimeUpdate -= UpdateTimer;
     }
 
     private void Start()
@@ -25,9 +25,15 @@ public class Timer : MonoBehaviour
         _timerText.text = "00 : 00";
     }
 
-    private void UpdateScore(float time)
+    /// <summary>
+    /// Updates the timer
+    /// </summary>
+    /// <param name="time"></param>
+    private void UpdateTimer(float time)
     {
         if (_debug) Debug.Log("Timer: " + time);
-        _timerText.text = $"{((int)time / 60):00} : {((int)time % 60):00}";
+
+        // Normalize the time aspect
+        _timerText.text = $"{(int)time / 60:00} : {(int)time % 60:00}";
     }
 }

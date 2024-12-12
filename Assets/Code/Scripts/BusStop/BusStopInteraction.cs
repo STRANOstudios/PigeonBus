@@ -4,7 +4,7 @@ using UnityEngine;
 public class BusStopInteraction : MonoBehaviour
 {
     [Title("References")]
-    [SerializeField, Required, Tooltip("The bus stop singal")] private GameObject busStopSingal;
+    [SerializeField, Required, Tooltip("The bus stop signal")] private GameObject busStopSingal;
 
     [Title("Debug")]
     [SerializeField] private bool _debug = false;
@@ -25,10 +25,12 @@ public class BusStopInteraction : MonoBehaviour
         GameManager.Reset -= SetRout;
     }
 
+    /// <summary>
+    /// Sets the route to a random one.
+    /// </summary>
     private void SetRout()
     {
         route = Route.Instance.GetRandomRoute();
-
         busStopSingal.GetComponent<MeshRenderer>().material = route;
     }
 }

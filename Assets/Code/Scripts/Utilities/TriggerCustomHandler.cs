@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider)), RequireComponent(typeof(Rigidbody))]
-public class TriggerEnter : MonoBehaviour
+public class TriggerCustomHandler : MonoBehaviour
 {
     [Title("References")]
     [SerializeField, Tooltip("Need for relative direction")][ShowIf("_areExcludesDisabled")] private Transform parentTransform = null;
@@ -45,9 +45,13 @@ public class TriggerEnter : MonoBehaviour
         public bool all => nord || sud || est || owest;
     }
 
+    // Serializable class for trigger event
     [Serializable] public class TriggerEvent : UnityEvent { }
 
+    // Check if triggers are disabled
     private bool _areTriggersDisabled => !(Enter || Exit || Stay);
+
+    // Check if excludes are disabled
     private bool _areExcludesDisabled => _directionEnter.all || _directionExit.all;
 
     private void Start()
@@ -66,8 +70,10 @@ public class TriggerEnter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!Enter || !OnTriggerCheck(other) || !OnDirectionCheck(other.ClosestPoint(transform.position), _directionEnter, other.transform.eulerAngles.y)) return;
+
         if (_debug) Debug.Log($"{name} Trigger Enter: {other.name}");
 
+        // Invoke the trigger enter event
         _onTriggerEnter?.Invoke();
 
         if (_triggerOnce) gameObject.SetActive(false);
@@ -76,8 +82,10 @@ public class TriggerEnter : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (!Exit || !OnTriggerCheck(other) || !OnDirectionCheck(other.ClosestPoint(transform.position), _directionExit, other.transform.eulerAngles.y)) return;
+
         if (_debug) Debug.Log($"{name} Trigger Exit: {other.name}");
 
+        // Invoke the trigger exit event
         _onTriggerExit?.Invoke();
 
         if (_triggerOnce) gameObject.SetActive(false);
@@ -86,8 +94,10 @@ public class TriggerEnter : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (!Stay || !OnTriggerCheck(other)) return;
+
         if (_debug) Debug.Log($"{name} Trigger Stay: {other.name}");
 
+        // Invoke the trigger stay event
         _onTriggerStay?.Invoke();
 
         if (_triggerOnce) gameObject.SetActive(false);
@@ -99,33 +109,51 @@ public class TriggerEnter : MonoBehaviour
         return (_layer.value & (1 << other.gameObject.layer)) != 0;
     }
 
-    /// <summary>
-    /// Check if the object is on the correct direction
+    /// Checks if the object is on the correct direction based on the collision point and excluded direction.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <param name="excludeDirection"></param>
-    /// <returns></returns>
+    /// <param name="collisionPoint">The point of collision in world space.</param>
+    /// <param name="excludeDirection">The direction to exclude from the check.</param>
+    /// <param name="colliderY">The Y rotation of the collider.</param>
+    /// <returns>True if the object is on the correct direction, false otherwise.</returns>
     private bool OnDirectionCheck(Vector3 collisionPoint, Direction excludeDirection, float colliderY)
     {
+        // If all directions are excluded, return true immediately
         if (!excludeDirection.all) return true;
 
+        // Draw a debug line to visualize the collision point
         if (_debug) Debug.DrawLine(collisionPoint, new Vector3(collisionPoint.x, 10f, collisionPoint.z), Color.red, 5f);
 
+        // Transform the collision point to local space
         collisionPoint = parentTransform.InverseTransformPoint(collisionPoint);
 
+        // Normalize the collision point to the maximum direction
         collisionPoint = NormalizeToMaxDirection(collisionPoint);
 
+        // Log the collision point and transform forward for debugging
         if (_debug) Debug.Log($"Collision point: {collisionPoint}");
         if (_debug) Debug.Log($"transform forward: {transform.forward} Transform y: {transform.eulerAngles.y}");
 
-        if (colliderY == 90 && transform.eulerAngles.y == 90) collisionPoint *= -1;
-        else if (colliderY == 0 && transform.eulerAngles.y == 0 && collisionPoint == Vector3.back) collisionPoint *= -1;
-        else if(colliderY == 180 && transform.eulerAngles.y == 180 && collisionPoint == Vector3.back) collisionPoint *= -1;
-        else if(colliderY == 270 && transform.eulerAngles.y == 270) collisionPoint *= -1;
+        // Apply rotation correction based on the collider's Y rotation
+        switch (colliderY)
+        {
+            case 90 when transform.eulerAngles.y == 90:
+                collisionPoint *= -1;
+                break;
+            case 0 when transform.eulerAngles.y == 0 && collisionPoint == Vector3.back:
+                collisionPoint *= -1;
+                break;
+            case 180 when transform.eulerAngles.y == 180 && collisionPoint == Vector3.back:
+                collisionPoint *= -1;
+                break;
+            case 270 when transform.eulerAngles.y == 270:
+                collisionPoint *= -1;
+                break;
+        }
 
-
+        // Log the collision point after rotation for debugging
         if (_debug) Debug.Log($"Collision point after rotation: {collisionPoint}");
 
+        // Check the direction of the collision point and return the result
         if (collisionPoint == Vector3.back)
         {
             if (_debug) Debug.Log("Nord");
@@ -147,28 +175,37 @@ public class TriggerEnter : MonoBehaviour
             return !excludeDirection.owest;
         }
 
+        // If none of the above conditions match, return false
         return false;
     }
 
     /// <summary>
-    /// Returns the direction with the highest magnitude
+    /// Returns the direction with the highest magnitude.
+    /// This method normalizes the input direction vector to a unit vector along the axis with the highest magnitude.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <returns></returns>
+    /// <param name="direction">The input direction vector.</param>
+    /// <returns>A unit vector along the axis with the highest magnitude.</returns>
     private Vector3 NormalizeToMaxDirection(Vector3 direction)
     {
+        // Find the maximum absolute value of the direction vector's components
         float maxValue = Mathf.Max(Mathf.Abs(direction.x), Mathf.Abs(direction.y), Mathf.Abs(direction.z));
 
+        // If the maximum value is greater than 0, normalize the direction vector
         if (maxValue > 0)
         {
+            // Check which axis has the highest magnitude and return a unit vector along that axis
             if (Mathf.Abs(direction.x) == maxValue)
+                // Return a unit vector along the x-axis with the same sign as the original direction
                 return new Vector3(Mathf.Sign(direction.x), 0, 0);
             if (Mathf.Abs(direction.y) == maxValue)
+                // Return a unit vector along the y-axis with the same sign as the original direction
                 return new Vector3(0, Mathf.Sign(direction.y), 0);
             if (Mathf.Abs(direction.z) == maxValue)
+                // Return a unit vector along the z-axis with the same sign as the original direction
                 return new Vector3(0, 0, Mathf.Sign(direction.z));
         }
 
+        // If the maximum value is 0, return the original direction vector (which is likely zero)
         return direction;
     }
 

@@ -36,6 +36,9 @@ public class WinLoseController : MonoBehaviour
         GameManager.Reset -= Reset;
     }
 
+    /// <summary>
+    /// Called when the player wins
+    /// </summary>
     private void Win()
     {
         if (!enabled) return;
@@ -48,6 +51,9 @@ public class WinLoseController : MonoBehaviour
         _onWin?.Invoke();
     }
 
+    /// <summary>
+    /// Called when the player loses
+    /// </summary>
     private void Lose()
     {
         if (!enabled) return;
@@ -60,6 +66,9 @@ public class WinLoseController : MonoBehaviour
         _onLose?.Invoke();
     }
 
+    /// <summary>
+    /// Called when the player resets
+    /// </summary>
     private void Reset()
     {
         if (!enabled) return;
@@ -71,6 +80,9 @@ public class WinLoseController : MonoBehaviour
         if (_loseScreen != null) FadeOut();
     }
 
+    /// <summary>
+    /// Fades the canvas in
+    /// </summary>
     public void FadeIn()
     {
         if (_debug) Debug.Log("FadeIn");
@@ -83,6 +95,9 @@ public class WinLoseController : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Fades the canvas out
+    /// </summary>
     public void FadeOut()
     {
         if (_debug) Debug.Log("FadeOut");

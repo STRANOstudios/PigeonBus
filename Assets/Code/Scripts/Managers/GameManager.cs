@@ -19,6 +19,7 @@ public class GameManager : Singleton<GameManager>
     private int score = 0;
     private float time = 0f;
 
+    // Events
     public static event Action<int> OnScoreUpdate;
     public static event Action<float> OnTimeUpdate;
     public static event Action Win;
@@ -45,13 +46,20 @@ public class GameManager : Singleton<GameManager>
         BusStopValidator.OnBusStopReached -= ScoreCounter;
     }
 
+    /// <summary>
+    /// Update the score
+    /// </summary>
+    /// <param name="value"></param>
     private void ScoreCounter(int value)
     {
         if(_debug) Debug.Log("Score: " + value);
 
         score += value;
 
+        // Update the score
         OnScoreUpdate?.Invoke(score);
+
+        // Update the time
         OnTimeUpdate?.Invoke(Time.realtimeSinceStartup - time);
 
         if (score <= _losingScore)

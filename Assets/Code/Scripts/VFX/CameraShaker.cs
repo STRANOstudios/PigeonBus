@@ -31,11 +31,13 @@ public class CameraShaker : MonoBehaviour
 
     private void Start()
     {
-        // Get perlin components
+        // Get the perlin components from the cameras
+        // This assumes that each camera has a CinemachineBasicMultiChannelPerlin component attached
         perlinComponents = cameras
             .Select(cam => cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>())
             .ToList();
 
+        // Apply the default shake settings to the perlin components
         ApplyShakeSettings(defaultNoise, defaultAmplitude);
     }
 
@@ -84,17 +86,30 @@ public class CameraShaker : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine that shakes the camera based on the provided ShakePreset.
+    /// </summary>
+    /// <param name="preset">The ShakePreset that defines the shake settings.</param>
+    /// <returns>An IEnumerator that yields null until the shake routine is complete.</returns>
     private IEnumerator ShakeRoutine(ShakePreset preset)
     {
+        // Apply the initial shake settings
         ApplyShakeSettings(preset.noiseSettings, 0);
 
         float elapsedTime = 0f;
+
+        // Loop until the shake duration has been reached
         while (elapsedTime < preset.duration)
         {
             elapsedTime += Time.deltaTime;
+
+            // Calculate the normalized time (0 to 1) based on the elapsed time and duration
             float normalizedTime = Mathf.Clamp01(elapsedTime / preset.duration);
+
+            // Calculate the intensity of the shake based on the normalized time and the preset's curve
             float intensity = preset.curve.Evaluate(normalizedTime) + defaultAmplitude;
 
+            // Apply the intensity to each perlin component
             foreach (var perlin in perlinComponents)
             {
                 perlin.m_AmplitudeGain = intensity;
@@ -106,17 +121,35 @@ public class CameraShaker : MonoBehaviour
         ApplyShakeSettings(defaultNoise, defaultAmplitude);
     }
 
+    /// <summary>
+    /// Represents a shake preset, which defines the settings for a shake effect.
+    /// </summary>
     [Serializable]
     public class ShakePreset
     {
+        /// <summary>
+        /// The noise settings for the shake effect.
+        /// </summary>
         [HorizontalGroup("Settings", LabelWidth = 100)]
         [SerializeField, Required, NoiseSettingsProperty]
         public NoiseSettings noiseSettings;
 
+        /// <summary>
+        /// The duration of the shake effect.
+        /// </summary>
+        /// <remarks>
+        /// This value must be greater than or equal to 0.
+        /// </remarks>
         [HorizontalGroup("Settings")]
         [SerializeField, MinValue(0f), Tooltip("Duration of the shake.")]
         public float duration = 0.5f;
 
+        /// <summary>
+        /// The curve that defines the shake effect over time.
+        /// </summary>
+        /// <remarks>
+        /// This curve is used to interpolate the shake effect's intensity over the duration.
+        /// </remarks>
         [BoxGroup("Curve", false)]
         [SerializeField, Tooltip("Curve for the shake effect over time.")]
         public AnimationCurve curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
