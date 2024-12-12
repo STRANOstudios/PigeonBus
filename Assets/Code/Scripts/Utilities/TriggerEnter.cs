@@ -60,12 +60,12 @@ public class TriggerEnter : MonoBehaviour
         {
             rigidbody.useGravity = false;
         }
-        if (parentTransform != null) parentTransform = transform;
+        if (parentTransform == null) parentTransform = transform;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!Enter || !OnTriggerCheck(other) || !OnDirectionCheck(other.transform.position, _directionEnter)) return;
+        if (!Enter || !OnTriggerCheck(other) || !OnDirectionCheck(other.ClosestPoint(transform.position), _directionEnter, other.transform.eulerAngles.y)) return;
         if (_debug) Debug.Log($"{name} Trigger Enter: {other.name}");
 
         _onTriggerEnter?.Invoke();
@@ -75,7 +75,7 @@ public class TriggerEnter : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!Exit || !OnTriggerCheck(other) || !OnDirectionCheck(other.transform.position, _directionExit)) return;
+        if (!Exit || !OnTriggerCheck(other) || !OnDirectionCheck(other.ClosestPoint(transform.position), _directionExit, other.transform.eulerAngles.y)) return;
         if (_debug) Debug.Log($"{name} Trigger Exit: {other.name}");
 
         _onTriggerExit?.Invoke();
@@ -105,30 +105,49 @@ public class TriggerEnter : MonoBehaviour
     /// <param name="direction"></param>
     /// <param name="excludeDirection"></param>
     /// <returns></returns>
-    private bool OnDirectionCheck(Vector3 direction, Direction excludeDirection)
+    private bool OnDirectionCheck(Vector3 collisionPoint, Direction excludeDirection, float colliderY)
     {
         if (!excludeDirection.all) return true;
 
-        if (_debug) Debug.Log($"{parentTransform}");
+        if (_debug) Debug.DrawLine(collisionPoint, new Vector3(collisionPoint.x, 10f, collisionPoint.z), Color.red, 5f);
 
-        // Get the direction relative to the parent
-        Vector3 localDirection = parentTransform.InverseTransformDirection(direction);
+        collisionPoint = parentTransform.InverseTransformPoint(collisionPoint);
 
-        // Normalize and magnitude the direction 
-        localDirection = NormalizeToMaxDirection(localDirection);
-        if (Mathf.Abs(parentTransform.eulerAngles.y) == 90)
+        collisionPoint = NormalizeToMaxDirection(collisionPoint);
+
+        if (_debug) Debug.Log($"Collision point: {collisionPoint}");
+        if (_debug) Debug.Log($"transform forward: {transform.forward} Transform y: {transform.eulerAngles.y}");
+
+        if (colliderY == 90 && transform.eulerAngles.y == 90) collisionPoint *= -1;
+        else if (colliderY == 0 && transform.eulerAngles.y == 0 && collisionPoint == Vector3.back) collisionPoint *= -1;
+        else if(colliderY == 180 && transform.eulerAngles.y == 180 && collisionPoint == Vector3.back) collisionPoint *= -1;
+        else if(colliderY == 270 && transform.eulerAngles.y == 270) collisionPoint *= -1;
+
+
+        if (_debug) Debug.Log($"Collision point after rotation: {collisionPoint}");
+
+        if (collisionPoint == Vector3.back)
         {
-            localDirection = new Vector3(localDirection.z, 0, localDirection.x);
+            if (_debug) Debug.Log("Nord");
+            return !excludeDirection.nord;
+        }
+        if (collisionPoint == Vector3.forward)
+        {
+            if (_debug) Debug.Log("Sud");
+            return !excludeDirection.sud;
+        }
+        if (collisionPoint == Vector3.right)
+        {
+            if (_debug) Debug.Log("Est");
+            return !excludeDirection.est;
+        }
+        if (collisionPoint == Vector3.left)
+        {
+            if (_debug) Debug.Log("Owest");
+            return !excludeDirection.owest;
         }
 
-        bool result =
-            (!excludeDirection.nord && localDirection.z < 0) ||  // Nord
-            (!excludeDirection.sud && localDirection.z > 0) ||   // South
-            (!excludeDirection.est && localDirection.x > 0) ||   // Est
-            (!excludeDirection.owest && localDirection.x < 0);  // West
-
-
-        return result;
+        return false;
     }
 
     /// <summary>
