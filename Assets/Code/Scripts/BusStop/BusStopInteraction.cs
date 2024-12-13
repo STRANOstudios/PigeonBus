@@ -9,6 +9,7 @@ public class BusStopInteraction : MonoBehaviour
     [Title("Debug")]
     [SerializeField] private bool _debug = false;
     [ShowIf("_debug"), ShowInInspector] private Material route;
+    [ShowIf("_debug")] public int routeID;
 
     private void Start()
     {
@@ -30,7 +31,11 @@ public class BusStopInteraction : MonoBehaviour
     /// </summary>
     private void SetRout()
     {
-        route = Route.Instance.GetRandomRoute();
+        RoutePack pack = Route.Instance.GetRandomRoute();
+
+        route = pack.route;
+        routeID = pack.number;
+
         busStopSingal.GetComponent<MeshRenderer>().material = route;
     }
 }

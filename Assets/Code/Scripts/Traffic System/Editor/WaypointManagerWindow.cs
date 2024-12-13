@@ -1,3 +1,4 @@
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEditor;
 using UnityEngine;
 
@@ -37,6 +38,10 @@ namespace TrafficSystem
         {
             if (Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Waypoint>())
             {
+                if(GUILayout.Button("Add Branch Waypoint"))
+                {
+                    CreateBranch();
+                }
                 if (GUILayout.Button("Create Waypoint Before"))
                 {
                     CreateWaypointBefore();
@@ -81,7 +86,7 @@ namespace TrafficSystem
 
         void CreateWaypointBefore()
         {
-            GameObject waypointObject = new("Waypoint" + waypointRoot.childCount, typeof(Waypoint));
+            GameObject waypointObject = new("Waypoint " + waypointRoot.childCount, typeof(Waypoint));
             waypointObject.transform.SetParent(waypointRoot, false);
 
             Waypoint newWaypoint = waypointObject.GetComponent<Waypoint>();
@@ -108,7 +113,7 @@ namespace TrafficSystem
 
         void CreateWaypointAfter()
         {
-            GameObject waypointObject = new("Waypoint" + waypointRoot.childCount, typeof(Waypoint));
+            GameObject waypointObject = new("Waypoint " + waypointRoot.childCount, typeof(Waypoint));
             waypointObject.transform.SetParent(waypointRoot, false);
 
             Waypoint newWaypoint = waypointObject.GetComponent<Waypoint>();
@@ -135,7 +140,7 @@ namespace TrafficSystem
 
         void CreateIntersection()
         {
-            GameObject waypointObject = new("Waypoint" + waypointRoot.childCount, typeof(WaypointIntersection));
+            GameObject waypointObject = new("Intesection " + waypointRoot.childCount, typeof(WaypointIntersection));
             waypointObject.transform.SetParent(waypointRoot, false);
 
             Waypoint newWaypoint = waypointObject.GetComponent<Waypoint>();
@@ -158,6 +163,22 @@ namespace TrafficSystem
             newWaypoint.transform.SetSiblingIndex(selectedWaypoint.transform.GetSiblingIndex());
 
             Selection.activeGameObject = newWaypoint.gameObject;
+        }
+
+        void CreateBranch()
+        {
+            GameObject waypointObject = new("Waypoint " + waypointRoot.childCount, typeof(Waypoint));
+            waypointObject.transform.SetParent(waypointRoot, false);
+
+            Waypoint waypoint = waypointObject.GetComponent<Waypoint>();
+
+            Waypoint branchedFrom = Selection.activeGameObject.GetComponent<Waypoint>();
+            branchedFrom.branches.Add(waypoint);
+
+            waypoint.transform.position = branchedFrom.transform.position;
+            waypoint.transform.forward = branchedFrom.transform.forward;
+
+            Selection.activeGameObject = waypoint.gameObject;
         }
 
         void RemoveWaypoint()

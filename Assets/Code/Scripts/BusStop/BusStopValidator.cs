@@ -5,7 +5,7 @@ using UnityEngine;
 public class BusStopValidator : MonoBehaviour
 {
     [Title("References")]
-    [SerializeField, Required, Tooltip("The display of the bus stop")] private GameObject display;
+    [SerializeField, Required, Tooltip("The display of the bus stop")] private MeshRenderer display;
 
     [Title("Settings")]
     [SerializeField, MinValue(1), Tooltip("The reward for reaching correct the bus stop")] private int reward = 1;
@@ -14,6 +14,7 @@ public class BusStopValidator : MonoBehaviour
     [Title("Debug")]
     [SerializeField] private bool _debug = false;
     [ShowIf("_debug"), ShowInInspector] private Material route;
+    [ShowIf("_debug")] public int routeID;
 
     public static event Action<int> OnBusStopReached;
 
@@ -34,17 +35,20 @@ public class BusStopValidator : MonoBehaviour
 
     private void SetRout()
     {
-        route = Route.Instance.GetRandomRoute();
+        RoutePack pack = Route.Instance.GetRandomRoute();
+
+        route = pack.route;
+        routeID = pack.number;
 
         display.GetComponent<MeshRenderer>().material = route;
     }
 
-    public void CheckRoute(MeshRenderer route)
+    public void CheckRoute(int routeID)
     {
-        bool isCorrectRoute = this.route == route.sharedMaterial;
+        bool isCorrectRoute = this.routeID == routeID;
 
         if (_debug)
-            Debug.Log(isCorrectRoute ? "Correct route" : $"Wrong route: {this.route} != {route.material}");
+            Debug.Log(isCorrectRoute ? "Correct route" : $"Wrong route: {this.routeID} != {routeID}");
 
         OnBusStopReached?.Invoke(isCorrectRoute ? reward : -penalty);
     }

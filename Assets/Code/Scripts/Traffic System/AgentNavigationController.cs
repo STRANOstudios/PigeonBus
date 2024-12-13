@@ -13,7 +13,7 @@ namespace TrafficSystem
         [Title("Obstacle Avoidance")]
         [SerializeField, MinValue(0f)] private float stoppingDistance = 0.5f;
         [SerializeField, MinValue(0f)] private float raycastDistance = 10f;
-        [SerializeField, Tooltip("Ray cast offset")] private Vector3 offset = Vector3.zero;
+        [SerializeField, Tooltip("Ray cast offset")] private Vector3 offset = Vector3.up;
         [SerializeField] private LayerMask obstacleLayer;
 
         [Title("Debug")]
@@ -46,7 +46,7 @@ namespace TrafficSystem
         {
             if (_debug) Debug.Log("HandleObstacleDetection");
 
-            Ray ray = new(transform.position + offset, transform.forward);
+            Ray ray = new(transform.TransformPoint(offset), transform.forward);
 
             if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, obstacleLayer))
             {
@@ -83,12 +83,13 @@ namespace TrafficSystem
                 {
                     _reachedTarget = false;
 
+                    transform.position += currentSpeed * Time.fixedDeltaTime * destinationDirection.normalized;
 
-                    transform.SetPositionAndRotation(Vector3.Lerp(transform.position, _targetPosition, currentSpeed / 10 * Time.fixedDeltaTime), Quaternion.Slerp(
+                    transform.rotation = Quaternion.Slerp(
                         transform.rotation,
                         Quaternion.LookRotation(destinationDirection),
                         rotationSpeed / 10 * Time.fixedDeltaTime
-                    ));
+                    );
                 }
                 else
                 {
@@ -133,10 +134,10 @@ namespace TrafficSystem
 
         private void OnDrawGizmos()
         {
-            if (!_onDrawGizmos) return;
+            if (!_onDrawGizmos || offset == null) return;
 
             Gizmos.color = _gizmosColor;
-            Gizmos.DrawRay(transform.position + offset, transform.forward * raycastDistance);
+            Gizmos.DrawRay(transform.TransformPoint(offset), transform.forward * raycastDistance);
 
             if (hitPosition != Vector3.zero)
             {

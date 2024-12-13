@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -79,9 +80,6 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void ResetScore()
     {
-        time = Time.realtimeSinceStartup;
-        score = 0;
-        OnScoreUpdate?.Invoke(score);
-        Reset?.Invoke();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

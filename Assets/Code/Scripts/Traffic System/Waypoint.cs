@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TrafficSystem
@@ -9,6 +10,9 @@ namespace TrafficSystem
         public Waypoint prevWaypoint;
         public Waypoint nextWaypoint;
         [Range(0.1f, 5f)] public float width = 1f;
+        public List<Waypoint> branches = new();
+        [Range(0f, 1f)]
+        public float branchRatio = 0.5f;
 
         [Button]
         public void ResetWaypoints()

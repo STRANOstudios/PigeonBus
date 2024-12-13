@@ -47,6 +47,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 6033147372709559016}
   nextWaypoint: {fileID: 0}
   width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &1167719663019028027
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +96,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 4834787290531787561}
   nextWaypoint: {fileID: 1051940838379910948}
   width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &2572285758259136433
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +145,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 235451714270995040}
   nextWaypoint: {fileID: 4885149136316583840}
   width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &2610406782893182651
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,9 +194,60 @@ MonoBehaviour:
   prevWaypoint: {fileID: 0}
   nextWaypoint: {fileID: 5753587913307875008}
   width: 1
+  branches: []
+  branchRatio: 0.5
   leftWaypoint: {fileID: 0}
-  rightWaypoint: {fileID: 3616561561130650855}
+  rightWaypoint: {fileID: 9144929146460543839}
   waypointType: 1
+--- !u!1 &2748154977160734969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5125137436970873025}
+  - component: {fileID: 9144929146460543839}
+  m_Layer: 0
+  m_Name: Exit Right (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5125137436970873025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2748154977160734969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: -1, y: 0, z: 5.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6943116729450712002}
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
+--- !u!114 &9144929146460543839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2748154977160734969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83370f5cb187cc144a8d74e8d5846b85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prevWaypoint: {fileID: 443871005908443068}
+  nextWaypoint: {fileID: 3616561561130650855}
+  width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &2952013819570066923
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +295,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 0}
   nextWaypoint: {fileID: 6033147372709559016}
   width: 1
+  branches: []
+  branchRatio: 0.5
   leftWaypoint: {fileID: 4122256873905390061}
   rightWaypoint: {fileID: 0}
   waypointType: 1
@@ -288,6 +347,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 1108902579789822935}
   nextWaypoint: {fileID: 0}
   width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &4694936001988282285
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +396,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 443871005908443068}
   nextWaypoint: {fileID: 6033147372709559016}
   width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &5830267927068211831
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,6 +445,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 235451714270995040}
   nextWaypoint: {fileID: 0}
   width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &6923948566439167178
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,6 +494,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 0}
   nextWaypoint: {fileID: 3616561561130650855}
   width: 1
+  branches: []
+  branchRatio: 0.5
   leftWaypoint: {fileID: 1108902579789822935}
   rightWaypoint: {fileID: 0}
   waypointType: 1
@@ -501,6 +568,7 @@ Transform:
   - {fileID: 4814685082245359706}
   - {fileID: 365614394184896094}
   - {fileID: 3635292809292766278}
+  - {fileID: 5125137436970873025}
   - {fileID: 5257224758808934045}
   - {fileID: 6794558872899306221}
   m_Father: {fileID: 8183222571701869917}
@@ -552,6 +620,8 @@ MonoBehaviour:
   prevWaypoint: {fileID: 4834787290531787561}
   nextWaypoint: {fileID: 4885149136316583840}
   width: 1
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &7886079752667780828
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,6 +42,16 @@ namespace TrafficSystem
 
                 Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.nextWaypoint.transform.position + offsetTo);
             }
+
+            if (waypoint.branches != null)
+            {
+                foreach (Waypoint branch in waypoint.branches)
+                {
+                    Gizmos.color = Color.yellow;
+                    Gizmos.DrawLine(waypoint.transform.position, branch.transform.position);
+                }
+            }
+
         }
 
         [DrawGizmo(GizmoType.NonSelected | GizmoType.Selected | GizmoType.Pickable)]
