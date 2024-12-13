@@ -573,6 +573,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2354676317615352163, guid: cb210236fc5bdfd46a82f46a178c35b4,
+        type: 3}
+      propertyPath: movementSpeed
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 5211449938535388547, guid: cb210236fc5bdfd46a82f46a178c35b4,
         type: 3}
       propertyPath: _rearWheelMeshes.Array.size

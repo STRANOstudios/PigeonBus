@@ -1,5 +1,7 @@
 using Sirenix.OdinInspector;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TrafficSystem
@@ -13,7 +15,7 @@ namespace TrafficSystem
         [Title("Obstacle Avoidance")]
         [SerializeField, MinValue(0f)] private float stoppingDistance = 0.5f;
         [SerializeField, MinValue(0f)] private float raycastDistance = 10f;
-        [SerializeField, Tooltip("Ray cast offset")] private Vector3 offset = Vector3.up;
+        [SerializeField, Tooltip("Ray cast offsets")] private Sensor[] offsets;
         [SerializeField] private LayerMask obstacleLayer;
 
         [Title("Debug")]
@@ -27,7 +29,7 @@ namespace TrafficSystem
         [SerializeField, ShowIf("_onDrawGizmos"), Tooltip("The size of the gizmo sphere to draw at the collision point")] private float _targetSize = 1f;
 
         private float currentSpeed;
-        private Vector3 hitPosition;
+        private List<Vector3> hitPositions = new ();
 
         private void Awake()
         {
@@ -38,7 +40,7 @@ namespace TrafficSystem
         {
             if (inWaiting) return;
 
-            HandleObstacleDetection();
+            if (offsets.Length > 0) HandleObstacleDetection();
             Move();
         }
 
@@ -49,28 +51,32 @@ namespace TrafficSystem
         {
             if (_debug) Debug.Log("HandleObstacleDetection");
 
-            Ray ray = new(transform.TransformPoint(offset), transform.forward);
+            hitPositions.Clear();
 
-            if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, obstacleLayer))
+            foreach (Sensor offset in offsets)
             {
-                // Adjust speed based on proximity to the obstacle
-                float distanceToObstacle = hit.distance;
-                float speedAdjustment = Mathf.Lerp(0, movementSpeed, distanceToObstacle / raycastDistance);
-                currentSpeed = speedAdjustment < 0.1 ? 0 : speedAdjustment;
+                Ray ray = new(offset.transform.position, offset.transform.forward);
 
-                if (_debug) Debug.Log($"Obstacle detected at distance: {distanceToObstacle}, adjusted speed: {currentSpeed}");
+                if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, obstacleLayer))
+                {
+                    // Adjust speed based on proximity to the obstacle
+                    float distanceToObstacle = hit.distance;
+                    float speedAdjustment = Mathf.Lerp(0, movementSpeed, distanceToObstacle / raycastDistance);
+                    currentSpeed = speedAdjustment < 0.1 ? 0 : speedAdjustment;
 
-                hitPosition = hit.point;
+                    if (_debug) Debug.Log($"Obstacle detected at distance: {distanceToObstacle}, adjusted speed: {currentSpeed}");
+
+                    hitPositions.Add(hit.point);
+                    return; // Exit the loop if an obstacle is detected
+                }
             }
-            else
-            {
-                // No obstacle detected, reset speed to normal
-                if (_debug) Debug.Log("No obstacle detected, resetting speed.");
 
-                hitPosition = Vector3.zero;
+            // No obstacle detected, reset speed to normal
+            if (_debug) Debug.Log("No obstacle detected, resetting speed.");
 
-                currentSpeed = movementSpeed;
-            }
+            hitPositions.Add(Vector3.zero);
+
+            currentSpeed = movementSpeed;
         }
 
         /// <summary>
@@ -164,14 +170,24 @@ namespace TrafficSystem
 
         private void OnDrawGizmos()
         {
-            if (!_onDrawGizmos || offset == null) return;
+            if (!_onDrawGizmos || offsets == null || offsets.Length == 0) return;
 
-            Gizmos.color = _gizmosColor;
-            Gizmos.DrawRay(transform.TransformPoint(offset), transform.forward * raycastDistance);
 
-            if (hitPosition != Vector3.zero)
+            foreach (Sensor offset in offsets)
             {
-                Gizmos.DrawSphere(hitPosition, _targetSize);
+                Gizmos.color = offset.GizmosColor;
+                Gizmos.DrawRay(offset.transform.position, offset.transform.forward * offset.RaycastDistance);
+            }
+
+            if (hitPositions != null && hitPositions.Count > 0)
+            {
+                foreach (var position in hitPositions)
+                {
+                    if (position != Vector3.zero) // Ignora posizioni non valide
+                    {
+                        Gizmos.DrawSphere(position, _targetSize);
+                    }
+                }
             }
         }
     }

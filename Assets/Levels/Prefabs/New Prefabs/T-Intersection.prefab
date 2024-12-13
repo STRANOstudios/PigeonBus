@@ -496,8 +496,8 @@ MonoBehaviour:
   width: 1
   branches: []
   branchRatio: 0.5
-  leftWaypoint: {fileID: 1108902579789822935}
-  rightWaypoint: {fileID: 0}
+  leftWaypoint: {fileID: 0}
+  rightWaypoint: {fileID: 1108902579789822935}
   waypointType: 1
 --- !u!1 &6977484329320219866
 GameObject:

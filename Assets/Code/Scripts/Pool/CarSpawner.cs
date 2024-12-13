@@ -9,6 +9,11 @@ namespace TrafficSystem
         [Title("Settings")]
         [SerializeField] private GameObject[] carPrefab;
         [SerializeField, MinValue(0f)] private int amountOfCars = 10;
+        [SerializeField, Range(0f, 50f), Tooltip("Radius of the check sphere")] private float radius = 5f;
+
+        [Title("Debug")]
+        [SerializeField] private bool _debug = false;
+        [SerializeField, ShowIf("_debug"), Required] private GameObject _spawnArea;
 
         private void Start()
         {
@@ -24,14 +29,24 @@ namespace TrafficSystem
             for (int i = 0; i < amountOfCars; i++)
             {
                 int j = Random.Range(0, spawnPoints.Length);
+                int k = Random.Range(0, carPrefab.Length);
 
-                // Instantiate a new car at the selected spawn point, using a random prefab from the carPrefab array
-                GameObject newCar = Instantiate(carPrefab[Random.Range(0, carPrefab.Length)], spawnPoints[j].transform.position, spawnPoints[j].transform.rotation);
+                Vector3 spawnPosition = spawnPoints[j].transform.position;
+                Collider[] colliders = Physics.OverlapSphere(spawnPosition, radius);
 
-                // Get the WaypointNavigator component from the newly spawned car and set its current waypoint to the spawn point
-                newCar.GetComponent<WaypointNavigator>().currentWaypoint = spawnPoints[j];
+                if (colliders.Length == 0)
+                {
+                    GameObject newCar = Instantiate(carPrefab[k], spawnPosition, Quaternion.LookRotation(spawnPoints[j].transform.forward * -1));
+                    newCar.GetComponent<WaypointNavigator>().currentWaypoint = spawnPoints[j];
+                }
 
-                // Wait for the end of the current frame before spawning the next car
+                if (_debug)
+                {
+                    GameObject spawnArea = Instantiate(_spawnArea, spawnPosition, spawnPoints[j].transform.rotation);
+                    spawnArea.transform.localScale = radius * Vector3.one;
+                    Destroy(spawnArea, 1f);
+                }
+
                 yield return new WaitForEndOfFrame();
             }
         }
