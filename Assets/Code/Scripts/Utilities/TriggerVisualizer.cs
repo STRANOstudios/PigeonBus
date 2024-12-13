@@ -55,11 +55,11 @@ public class TriggerVisualizer : MonoBehaviour
         {
             Vector3 center = collider.transform.position;
 
-            Handles.color = Color.white;
-            Handles.Label(center + transform.forward * 1, "N");   // Nord
-            Handles.Label(center - transform.forward * 1, "S");   // Sud
-            Handles.Label(center + transform.right * 1, "E"); // Est
-            Handles.Label(center - transform.right * 1, "W"); // Ovest
+            //Handles.color = Color.white;
+            //Handles.Label(center + transform.forward * 1, "N");   // Nord
+            //Handles.Label(center - transform.forward * 1, "S");   // Sud
+            //Handles.Label(center + transform.right * 1, "E"); // Est
+            //Handles.Label(center - transform.right * 1, "W"); // Ovest
         }
     }
 

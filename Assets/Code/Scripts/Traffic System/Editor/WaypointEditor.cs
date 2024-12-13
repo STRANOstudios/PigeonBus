@@ -6,113 +6,81 @@ namespace TrafficSystem
     [InitializeOnLoad()]
     public class WaypointEditor
     {
+        // Colors used for selected and unselected waypoints
+        private static Color _selectedColor = Color.yellow;
+        private static Color _unselectedColor = Color.yellow * 0.5f;
+        private static Color _blueSelectedColor = Color.blue;
+        private static Color _blueUnselectedColor = Color.blue * 0.5f;
+
+        /// <summary>
+        /// Draws a gizmo for a waypoint in the scene view.
+        /// </summary>
+        /// <param name="waypoint">The waypoint to draw.</param>
+        /// <param name="gizmoType">The type of gizmo to draw.</param>
         [DrawGizmo(GizmoType.NonSelected | GizmoType.Selected | GizmoType.Pickable)]
         public static void OnDrawSceneGizmo(Waypoint waypoint, GizmoType gizmoType)
         {
-            if(waypoint is WaypointIntersection) return;
-
-            if ((gizmoType & GizmoType.Selected) != 0)
-            {
-                Gizmos.color = Color.yellow;
-            }
-            else
-            {
-                Gizmos.color = Color.yellow * 0.5f;
-            }
-
-            Gizmos.DrawSphere(waypoint.transform.position, 1f);
-
-            Gizmos.color = Color.white;
-            Gizmos.DrawLine(waypoint.transform.position + (waypoint.transform.right * waypoint.width / 2f), waypoint.transform.position + (-waypoint.transform.right * waypoint.width / 2f));
-
-            if (waypoint.prevWaypoint != null)
-            {
-                Gizmos.color = Color.red;
-                Vector3 offset = waypoint.transform.right * waypoint.width / 2f;
-                Vector3 offsetTo = waypoint.prevWaypoint.transform.right * waypoint.prevWaypoint.width / 2f;
-
-                Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.prevWaypoint.transform.position + offsetTo);
-            }
-
-            if (waypoint.nextWaypoint != null)
-            {
-                Gizmos.color = Color.green;
-                Vector3 offset = waypoint.transform.right * -waypoint.width / 2f;
-                Vector3 offsetTo = waypoint.nextWaypoint.transform.right * -waypoint.nextWaypoint.width / 2f;
-
-                Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.nextWaypoint.transform.position + offsetTo);
-            }
-
-            if (waypoint.branches != null)
-            {
-                foreach (Waypoint branch in waypoint.branches)
-                {
-                    Gizmos.color = Color.yellow;
-                    Gizmos.DrawLine(waypoint.transform.position, branch.transform.position);
-                }
-            }
-
+            // Draw the waypoint with the default colors
+            DrawWaypoint(waypoint, gizmoType, _selectedColor, _unselectedColor);
         }
 
+        /// <summary>
+        /// Draws a gizmo for a waypoint intersection in the scene view.
+        /// </summary>
+        /// <param name="waypoint">The waypoint intersection to draw.</param>
+        /// <param name="gizmoType">The type of gizmo to draw.</param>
         [DrawGizmo(GizmoType.NonSelected | GizmoType.Selected | GizmoType.Pickable)]
         public static void OnDrawSceneGizmo(WaypointIntersection waypoint, GizmoType gizmoType)
         {
-            if ((gizmoType & GizmoType.Selected) != 0)
-            {
-                Gizmos.color = Color.blue;
-            }
-            else
-            {
-                Gizmos.color = Color.blue * 0.5f;
-            }
+            // Draw the waypoint intersection with blue colors
+            DrawWaypoint(waypoint, gizmoType, _blueSelectedColor, _blueUnselectedColor);
+        }
 
+        /// <summary>
+        /// Draws a waypoint and its connections in the scene view.
+        /// </summary>
+        /// <param name="waypoint">The waypoint to draw.</param>
+        /// <param name="gizmoType">The type of gizmo to draw.</param>
+        /// <param name="selectedColor">The color to use for the waypoint when it is selected.</param>
+        /// <param name="unselectedColor">The color to use for the waypoint when it is not selected.</param>
+        private static void DrawWaypoint(Waypoint waypoint, GizmoType gizmoType, Color selectedColor, Color unselectedColor)
+        {
+            // Set the color of the waypoint based on its selection state
+            Gizmos.color = (gizmoType & GizmoType.Selected) != 0 ? selectedColor : unselectedColor;
             Gizmos.DrawSphere(waypoint.transform.position, 1f);
 
+            // Draw a line to represent the width of the waypoint
             Gizmos.color = Color.white;
             Gizmos.DrawLine(waypoint.transform.position + (waypoint.transform.right * waypoint.width / 2f), waypoint.transform.position + (-waypoint.transform.right * waypoint.width / 2f));
 
-            // previus
+            // Draw connections to the previous and next waypoints
+            DrawConnection(waypoint.prevWaypoint, waypoint, Color.red);
+            DrawConnection(waypoint.nextWaypoint, waypoint, Color.green);
 
-            if (waypoint.prevWaypoint != null)
+            // If this is a waypoint intersection, draw connections to the left and right waypoints
+            if (waypoint is WaypointIntersection intersection)
             {
-                Gizmos.color = Color.red;
-                Vector3 offset = waypoint.transform.right * waypoint.width / 2f;
-                Vector3 offsetTo = waypoint.prevWaypoint.transform.right * waypoint.prevWaypoint.width / 2f;
-
-                Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.prevWaypoint.transform.position + offsetTo);
+                DrawConnection(intersection.leftWaypoint, intersection, Color.cyan);
+                DrawConnection(intersection.rightWaypoint, intersection, Color.magenta);
             }
+        }
 
-            // straight
-
-            if (waypoint.nextWaypoint != null)
+        /// <summary>
+        /// Draws a connection between two waypoints in the scene view.
+        /// </summary>
+        /// <param name="target">The target waypoint.</param>
+        /// <param name="source">The source waypoint.</param>
+        /// <param name="color">The color to use for the connection.</param>
+        private static void DrawConnection(Waypoint target, Waypoint source, Color color)
+        {
+            // If the target waypoint is not null, draw a line to connect the two waypoints
+            if (target != null)
             {
-                Gizmos.color = Color.green;
-                Vector3 offset = waypoint.transform.right * -waypoint.width / 2f;
-                Vector3 offsetTo = waypoint.nextWaypoint.transform.right * -waypoint.nextWaypoint.width / 2f;
+                Gizmos.color = color;
+                Vector3 offset = source.transform.right * -source.width / 2f;
+                Vector3 offsetTo = target.transform.right * -target.width / 2f;
 
-                Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.nextWaypoint.transform.position + offsetTo);
-            }
-
-            // left
-
-            if (waypoint.leftWaypoint != null)
-            {
-                Gizmos.color = Color.cyan;
-                Vector3 offset = waypoint.transform.right * -waypoint.width / 2f;
-                Vector3 offsetTo = waypoint.leftWaypoint.transform.right * -waypoint.leftWaypoint.width / 2f;
-
-                Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.leftWaypoint.transform.position + offsetTo);
-            }
-
-            // right
-
-            if (waypoint.rightWaypoint != null)
-            {
-                Gizmos.color = Color.magenta;
-                Vector3 offset = waypoint.transform.right * -waypoint.width / 2f;
-                Vector3 offsetTo = waypoint.rightWaypoint.transform.right * -waypoint.rightWaypoint.width / 2f;
-
-                Gizmos.DrawLine(waypoint.transform.position + offset, waypoint.rightWaypoint.transform.position + offsetTo);
+                Gizmos.DrawLine(source.transform.position + offset, target.transform.position + offsetTo);
             }
         }
     }

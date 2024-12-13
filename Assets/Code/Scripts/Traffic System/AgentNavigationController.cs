@@ -42,6 +42,9 @@ namespace TrafficSystem
             Move();
         }
 
+        /// <summary>
+        /// HandleObstacleDetection handles the detection of obstacles.
+        /// </summary>
         private void HandleObstacleDetection()
         {
             if (_debug) Debug.Log("HandleObstacleDetection");
@@ -70,21 +73,36 @@ namespace TrafficSystem
             }
         }
 
+        /// <summary>
+        /// Move moves the agent towards its target position.
+        /// </summary>
         private void Move()
         {
+            // Check if the current position of the agent is not equal to the target position
             if (transform.position != _targetPosition)
             {
+                // Calculate the direction from the current position to the target position
                 Vector3 destinationDirection = _targetPosition - transform.position;
+
+                // Ignore the vertical component of the direction (i.e., set y to 0) to ensure the agent moves only horizontally
                 destinationDirection.y = 0f;
 
+                // Calculate the distance between the current position and the target position
                 float destinationDistance = destinationDirection.magnitude;
 
+                // Check if the distance to the target position is greater than or equal to the stopping distance
                 if (destinationDistance >= stoppingDistance)
                 {
+                    // Set the flag to indicate that the target has not been reached yet
                     _reachedTarget = false;
 
+                    // Move the agent towards the target position by adding a fraction of the direction vector to the current position
+                    // The fraction is calculated based on the current speed and the fixed delta time
                     transform.position += currentSpeed * Time.fixedDeltaTime * destinationDirection.normalized;
 
+                    // Rotate the agent to face the target position by interpolating between the current rotation and the target rotation
+                    // The interpolation is done using the Quaternion.Slerp function, which ensures a smooth rotation
+                    // The rotation speed is scaled by the fixed delta time to ensure consistent rotation speed
                     transform.rotation = Quaternion.Slerp(
                         transform.rotation,
                         Quaternion.LookRotation(destinationDirection),
@@ -93,15 +111,16 @@ namespace TrafficSystem
                 }
                 else
                 {
+                    // If the distance to the target position is less than the stopping distance, set the flag to indicate that the target has been reached
                     _reachedTarget = true;
                 }
             }
         }
 
         /// <summary>
-        /// Sets the destination
+        /// Sets the destination of the agent.
         /// </summary>
-        /// <param name="destination"></param>
+        /// <param name="destination">The destination position.</param>
         public void SetDestination(Vector3 destination)
         {
             _targetPosition = destination;
@@ -109,14 +128,18 @@ namespace TrafficSystem
         }
 
         /// <summary>
-        /// Waits for the specified amount of seconds
+        /// Waits for the specified amount of seconds.
         /// </summary>
-        /// <param name="seconds"></param>
+        /// <param name="seconds">The number of seconds to wait.</param>
         public void Wait(float seconds)
         {
             StartCoroutine(WaitCoroutine(seconds));
         }
 
+        /// <summary>
+        /// WaitCoroutine is a coroutine that waits for the specified amount of seconds.
+        /// </summary>
+        /// <param name="delay">The number of seconds to wait.</param>
         private IEnumerator WaitCoroutine(float delay)
         {
             inWaiting = true;
@@ -125,11 +148,18 @@ namespace TrafficSystem
         }
 
         /// <summary>
-        /// Returns true if the target has been reached
+        /// Returns true if the target has been reached.
         /// </summary>
         public bool ReachedDestination => _reachedTarget;
 
+        /// <summary>
+        /// Gets the current speed of the agent.
+        /// </summary>
         public float Speed => currentSpeed;
+
+        /// <summary>
+        /// Gets the target position of the agent.
+        /// </summary>
         public Vector3 TargetPosition => _targetPosition;
 
         private void OnDrawGizmos()

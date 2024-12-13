@@ -2668,7 +2668,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153914773}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27984813, y: 0.36470523, z: -0.11591691, w: 0.88047624}
+  m_LocalRotation: {x: 0.27984816, y: 0.3647052, z: -0.11591689, w: 0.88047624}
   m_LocalPosition: {x: -32.94, y: 30, z: 45.760002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6024,7 +6024,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.27984813, y: 0.36470523, z: -0.11591691, w: 0.88047624}
+  m_LocalRotation: {x: 0.27984816, y: 0.3647052, z: -0.11591689, w: 0.88047624}
   m_LocalPosition: {x: -32.94, y: 30, z: 45.760002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6838,7 +6838,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "<b>Objective</b>: Reach 5 correct bus stops. Each mistake lowers your
     score, and if it goes below zero, you lose.\n\n<b>Instructions</b>: Check the
-    route color on the bus display and the signs at the bus stops.\n\n<b>Penalty</b>:
+    route color on the bus livery and the signs at the bus roof.\n\n<b>Penalty</b>:
     Incorrect stops lower your score. Score below zero = loss.\n\n<b>Intersection
     Choices</b>: Choose a direction at intersections, or the bus will follow the
     road automatically.\n\n<b>Bus Control</b>: If you don\u2019t make a choice, the
