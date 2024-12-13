@@ -64,7 +64,7 @@ These steps should allow you to copy a Unity project from GitHub, set it up in U
 
 ### Release
 
-[Download](https://github.com/STRANOstudios/PigeonBus/releases/tag/V.0.1.2)
+[Download](https://github.com/STRANOstudios/PigeonBus/releases/tag/V.0.1.3)
 
 ## Credits
 
