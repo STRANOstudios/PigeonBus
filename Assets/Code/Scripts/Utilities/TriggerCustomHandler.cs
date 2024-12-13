@@ -77,7 +77,7 @@ public class TriggerCustomHandler : MonoBehaviour
 
         if (_debug) Debug.Log($"{name} Trigger Enter: {other.name}");
 
-        ColliderEntry = other;
+        _colliderEntry = other;
 
         // Invoke the trigger enter event
         _onTriggerEnter?.Invoke();
@@ -91,7 +91,7 @@ public class TriggerCustomHandler : MonoBehaviour
 
         if (_debug) Debug.Log($"{name} Trigger Exit: {other.name}");
 
-        ColliderExit = other;
+        _colliderExit = other;
 
         // Invoke the trigger exit event
         _onTriggerExit?.Invoke();
@@ -105,7 +105,7 @@ public class TriggerCustomHandler : MonoBehaviour
 
         if (_debug) Debug.Log($"{name} Trigger Stay: {other.name}");
 
-        ColliderStay = other;
+        _colliderStay = other;
 
         // Invoke the trigger stay event
         _onTriggerStay?.Invoke();
@@ -189,9 +189,9 @@ public class TriggerCustomHandler : MonoBehaviour
         return false;
     }
 
-    public Collider GetColliderEntry() => colliderEntry;
-    public Collider GetColliderExit() => colliderExit;
-    public Collider GetColliderStay() => colliderStay;
+    public Collider GetColliderEntry() => _colliderEntry;
+    public Collider GetColliderExit() => _colliderExit;
+    public Collider GetColliderStay() => _colliderStay;
 
     /// <summary>
     /// Returns the direction with the highest magnitude.

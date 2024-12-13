@@ -3,62 +3,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class Path
+namespace PathEditor
 {
-    [SerializeField, HideInInspector]
-    List<Vector3> points;
-
-    public Path(Vector3 centre)
+    [Serializable]
+    public class Path
     {
-        points = new List<Vector3>()
+        [SerializeField, HideInInspector]
+        List<Vector3> points;
+
+        public Path(Vector3 centre)
+        {
+            points = new List<Vector3>()
         {
             centre+Vector3.left,
             centre+(Vector3.left + Vector3.up)*.5f,
             centre +(Vector3.right + Vector3.down)*.5f,
             centre+Vector3.right
         };
-    }
-
-    public Vector3 this[int i]
-    {
-        get
-        {
-            return points[i];
         }
-    }
 
-    public int NumPoints
-    {
-        get
+        public Vector3 this[int i]
         {
-            return points.Count;
+            get
+            {
+                return points[i];
+            }
         }
-    }
 
-    public int NumSegments
-    {
-        get
+        public int NumPoints
         {
-            return (points.Count - 4) / 3 + 1;
+            get
+            {
+                return points.Count;
+            }
         }
-    }
 
-    public void AddSegment(Vector3 anchorPos)
-    {
-        points.Add(points[^1] * 2 - points[^2]);
-        points.Add((points[^1] + anchorPos) * .5f);
-        points.Add(anchorPos);
-    }
+        public int NumSegments
+        {
+            get
+            {
+                return (points.Count - 4) / 3 + 1;
+            }
+        }
 
-    public Vector3[] GetPointsInSegment(int i = 0)
-    {
-        return new Vector3[] { points[i * 3], points[i * 3 + 1], points[i * 3 + 2], points[i * 3 + 3] };
-    }
+        public void AddSegment(Vector3 anchorPos)
+        {
+            points.Add(points[^1] * 2 - points[^2]);
+            points.Add((points[^1] + anchorPos) * .5f);
+            points.Add(anchorPos);
+        }
 
-    public void MovePoint(int i, Vector3 pos)
-    {
-        points[i] = pos;
-    }
+        public Vector3[] GetPointsInSegment(int i = 0)
+        {
+            return new Vector3[] { points[i * 3], points[i * 3 + 1], points[i * 3 + 2], points[i * 3 + 3] };
+        }
 
+        public void MovePoint(int i, Vector3 pos)
+        {
+            points[i] = pos;
+        }
+
+    }
 }
