@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1148076374651282856}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2689872844481224253}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: '- Mesh'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 5614163524796392339}
   - component: {fileID: 5614163524793525169}
   - component: {fileID: 5614163524794491249}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Car Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5614163524796392337}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Vehicle_Pick up Truck_color03_separate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 5614163524796392345}
   - component: {fileID: 5614163524793525177}
   - component: {fileID: 5614163524794491257}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Wheel_RR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 5614163524796392347}
   - component: {fileID: 5614163524793525179}
   - component: {fileID: 5614163524794491259}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Wheel_RL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 5614163524796392349}
   - component: {fileID: 5614163524793525181}
   - component: {fileID: 5614163524794491261}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Wheel_FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 5614163524796392351}
   - component: {fileID: 5614163524793525183}
   - component: {fileID: 5614163524794491263}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Wheel_FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -524,7 +524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7462618415333463127}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: RL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 2354676317615352163}
   - component: {fileID: 2113505264137791407}
   - component: {fileID: 5211449938535388547}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -623,7 +623,7 @@ MonoBehaviour:
   offset: {x: 0, y: 1, z: 3.5}
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 448
   _debug: 0
   _onDrawGizmos: 1
   _gizmosColor: {r: 1, g: 0, b: 0, a: 1}

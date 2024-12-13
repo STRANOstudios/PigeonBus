@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4826832319511859145}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8426081792227881265}
   - component: {fileID: 8426081792227111185}
   - component: {fileID: 8426081792225981393}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_RR1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 8426081792227881267}
   - component: {fileID: 8426081792227111187}
   - component: {fileID: 8426081792225981395}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_RR2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 8426081792227881269}
   - component: {fileID: 8426081792227111189}
   - component: {fileID: 8426081792225981397}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_RL1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 8426081792227881271}
   - component: {fileID: 8426081792227111191}
   - component: {fileID: 8426081792225981399}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_RL2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 8426081792227881273}
   - component: {fileID: 8426081792227111193}
   - component: {fileID: 8426081792225981401}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 8426081792227881275}
   - component: {fileID: 8426081792227111195}
   - component: {fileID: 8426081792225981403}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +539,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8426081792227881279}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Vehicle_Truck_color03_separate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -579,7 +579,7 @@ GameObject:
   - component: {fileID: 8426081792227881277}
   - component: {fileID: 8426081792227111199}
   - component: {fileID: 8426081792225981407}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,7 +660,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1539302061501855917}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}

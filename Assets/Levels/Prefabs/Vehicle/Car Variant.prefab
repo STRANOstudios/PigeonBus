@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2300528630467328035}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2530806757397237512}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 8123782313737279121}
   - component: {fileID: 8123782313736476337}
   - component: {fileID: 8123782313735378033}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_RL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 8123782313737279123}
   - component: {fileID: 8123782313736476339}
   - component: {fileID: 8123782313735378035}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_RR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 8123782313737279125}
   - component: {fileID: 8123782313736476341}
   - component: {fileID: 8123782313735378037}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 8123782313737279127}
   - component: {fileID: 8123782313736476343}
   - component: {fileID: 8123782313735378039}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel_FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -405,7 +405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8123782313737279131}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Vehicle_Taxi_separate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 8123782313737279129}
   - component: {fileID: 8123782313736476347}
   - component: {fileID: 8123782313735378043}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CarBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}

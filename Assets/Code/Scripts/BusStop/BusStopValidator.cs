@@ -43,6 +43,10 @@ public class BusStopValidator : MonoBehaviour
         display.GetComponent<MeshRenderer>().material = route;
     }
 
+    /// <summary>
+    /// Checks if the bus stop is correct
+    /// </summary>
+    /// <param name="routeID"></param>
     public void CheckRoute(int routeID)
     {
         bool isCorrectRoute = this.routeID == routeID;
