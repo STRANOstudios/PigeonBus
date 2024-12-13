@@ -20,6 +20,8 @@ namespace TrafficSystem
         [DrawGizmo(GizmoType.NonSelected | GizmoType.Selected | GizmoType.Pickable)]
         public static void OnDrawSceneGizmo(Waypoint waypoint, GizmoType gizmoType)
         {
+            // If the waypoint is a waypoint intersection, don't draw it
+            if (waypoint as WaypointIntersection) return;
             // Draw the waypoint with the default colors
             DrawWaypoint(waypoint, gizmoType, _selectedColor, _unselectedColor);
         }
@@ -54,7 +56,7 @@ namespace TrafficSystem
             Gizmos.DrawLine(waypoint.transform.position + (waypoint.transform.right * waypoint.width / 2f), waypoint.transform.position + (-waypoint.transform.right * waypoint.width / 2f));
 
             // Draw connections to the previous and next waypoints
-            DrawConnection(waypoint.prevWaypoint, waypoint, Color.red);
+            DrawConnection(waypoint.prevWaypoint, waypoint, Color.red, true);
             DrawConnection(waypoint.nextWaypoint, waypoint, Color.green);
 
             // If this is a waypoint intersection, draw connections to the left and right waypoints
@@ -71,14 +73,15 @@ namespace TrafficSystem
         /// <param name="target">The target waypoint.</param>
         /// <param name="source">The source waypoint.</param>
         /// <param name="color">The color to use for the connection.</param>
-        private static void DrawConnection(Waypoint target, Waypoint source, Color color)
+        /// <param name="side">Whether the connection is on the left or right side of the waypoint. (true = left | false = right)</param>
+        private static void DrawConnection(Waypoint target, Waypoint source, Color color, bool side = false)
         {
             // If the target waypoint is not null, draw a line to connect the two waypoints
             if (target != null)
             {
                 Gizmos.color = color;
-                Vector3 offset = source.transform.right * -source.width / 2f;
-                Vector3 offsetTo = target.transform.right * -target.width / 2f;
+                Vector3 offset = source.transform.right * source.width / 2f * (side ? 1f : -1f);
+                Vector3 offsetTo = target.transform.right * target.width / 2f * (side ? 1f : -1f);
 
                 Gizmos.DrawLine(source.transform.position + offset, target.transform.position + offsetTo);
             }
